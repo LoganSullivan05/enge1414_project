@@ -5,6 +5,8 @@ void setup() {
 	pinMode(A1, INPUT);
   pinMode(A2, INPUT);
   pinMode(A3, INPUT);
+
+  pinMode(2, INPUT);
 }
 
 // TEST_MODE values:
@@ -21,6 +23,9 @@ void loop() {
   int value1 = analogRead(A1);
   int value2 = analogRead(A2);
   int value3 = analogRead(A3);
+  int value4 = analogRead(A4);
+  int value5 = analogRead(A5);
+  int value6 = analogRead(2);
 
 	Serial.print(value0);
 	Serial.print(", ");
@@ -28,7 +33,13 @@ void loop() {
 	Serial.print(", ");
   Serial.print(value2);
 	Serial.print(", ");
-	Serial.println(value3);
+	Serial.print(value3);
+  Serial.print(", ");
+  Serial.print(value4);
+	Serial.print(", ");
+	Serial.print(value5);
+  Serial.print(", ");
+	Serial.println(value6);
 
   if(TEST_MODE == 0){
     tone(10, 440);
@@ -37,11 +48,14 @@ void loop() {
     return;
   }
 
-  int note0 = 0, note1 = 0, note2 = 0, note3 = 0;
+  int note0 = 0, note1 = 0, note2 = 0, note3 = 0, note4 = 0, note5 = 0, note6 = 0;
   if(value0 < 200) note0 = 370;
   if(value1 < 200) note1 = 393;
   if(value2 < 200) note2 = 415;
   if(value3 < 200) note3 = 440;
+  if(value4 < 200) note4 = 468;
+  if(value5 < 200) note5 = 490;
+  if(value6 < 200) note6 = 530;
 
     if(TEST_MODE == 1){
       tone(10, note0);
@@ -67,12 +81,16 @@ void loop() {
 
 void playChord(int f1, int f2, int f3, int f4, int duration) {
 	unsigned long start = millis();
-  int delay_ms = 2;
+
+  int duration_ms = 2;
+  // example made delay > duration to distinguish notes
+  int delay_ms = duration_ms;
+
 	while (millis() - start < duration) {
-		if(f1 != 0) tone(10, f1, delay_ms); delay(delay_ms);
-		if(f2 != 0) tone(10, f2, delay_ms); delay(delay_ms);
-		if(f3 != 0) tone(10, f3, delay_ms); delay(delay_ms);
-    if(f4 != 0) tone(10, f4, delay_ms); delay(delay_ms);
+		if(f1 != 0) tone(10, f1, duration_ms); delay(delay_ms);
+		if(f2 != 0) tone(10, f2, duration_ms); delay(delay_ms);
+		if(f3 != 0) tone(10, f3, duration_ms); delay(delay_ms);
+    if(f4 != 0) tone(10, f4, duration_ms); delay(delay_ms);
 	}
 	noTone(10);
 }
