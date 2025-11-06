@@ -19,13 +19,13 @@ const int TEST_MODE = 0;
 
 void loop() {
 
-  int value0 = analogRead(A0);
-  int value1 = analogRead(A1);
-  int value2 = analogRead(A2);
-  int value3 = analogRead(A3);
-  int value4 = analogRead(A4);
-  int value5 = analogRead(A5);
-  int value6 = analogRead(2);
+  int value0 = analogRead(A1);
+  int value1 = analogRead(A2);
+  int value2 = analogRead(A3);
+  int value3 = analogRead(A4);
+  int value4 = analogRead(A5);
+  int value5 = analogRead(A6);
+  int value6 = analogRead(A7);
 
 	Serial.print(value0);
 	Serial.print(", ");
@@ -40,10 +40,10 @@ void loop() {
 	Serial.print(value5);
   Serial.print(", ");
 	Serial.println(value6);
-
+  
   if(TEST_MODE == 0){
     tone(10, 440);
-    delay(100);
+    delay(500);
     noTone(10);
     return;
   }
@@ -79,10 +79,11 @@ void loop() {
 
 
 
+//! doesnt work as intended
 void playChord(int f1, int f2, int f3, int f4, int duration) {
 	unsigned long start = millis();
 
-  int duration_ms = 2;
+  int duration_ms = 5;
   // example made delay > duration to distinguish notes
   int delay_ms = duration_ms;
 
