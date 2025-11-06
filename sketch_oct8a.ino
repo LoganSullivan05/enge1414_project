@@ -43,7 +43,7 @@ void loop() {
   
   if(TEST_MODE == 0){
     tone(10, 440);
-    delay(500);
+    delay(500); // this line delays 500ms for test_mode 0 (change val to change log speed)
     noTone(10);
     return;
   }
