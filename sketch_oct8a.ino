@@ -5,8 +5,10 @@ void setup() {
 	pinMode(A1, INPUT);
   pinMode(A2, INPUT);
   pinMode(A3, INPUT);
-
-  pinMode(2, INPUT);
+  pinMode(A4, INPUT);
+  pinMode(A5, INPUT);
+  pinMode(A6, INPUT);
+  pinMode(A7, INPUT);
 }
 
 // TEST_MODE values:
@@ -15,7 +17,7 @@ void setup() {
 // 2: play note0 only if one photoresistor reaches threshold
 // 3: play chords (multiple notes at once)
 
-const int TEST_MODE = 0;
+const int TEST_MODE = 3;
 
 void loop() {
 
@@ -43,19 +45,20 @@ void loop() {
   
   if(TEST_MODE == 0){
     tone(10, 440);
-    delay(500); // this line delays 500ms for test_mode 0 (change val to change log speed)
+    delay(100); // this line delays 500ms for test_mode 0 (change val to change log speed)
     noTone(10);
     return;
   }
 
   int note0 = 0, note1 = 0, note2 = 0, note3 = 0, note4 = 0, note5 = 0, note6 = 0;
-  if(value0 < 200) note0 = 370;
-  if(value1 < 200) note1 = 393;
-  if(value2 < 200) note2 = 415;
-  if(value3 < 200) note3 = 440;
-  if(value4 < 200) note4 = 468;
-  if(value5 < 200) note5 = 490;
-  if(value6 < 200) note6 = 530;
+  int note_threshold = 300;
+  if(value0 < note_threshold) note0 = 370;
+  if(value1 < note_threshold) note1 = 393;
+  if(value2 < note_threshold) note2 = 415;
+  if(value3 < note_threshold) note3 = 440;
+  if(value4 < note_threshold) note4 = 468;
+  if(value5 < note_threshold) note5 = 490;
+  if(value6 < note_threshold) note6 = 530;
 
     if(TEST_MODE == 1){
       tone(10, note0);
@@ -73,14 +76,14 @@ void loop() {
     }
 
     if(TEST_MODE == 3){
-      playChord(note0, note1, note2, note3, 100);
+      playChord(note0, note1, note2, note3, note4, note5, note6, 100);
     }
 }
 
 
 
 //! doesnt work as intended
-void playChord(int f1, int f2, int f3, int f4, int duration) {
+void playChord(int f1, int f2, int f3, int f4, int f5, int f6, int f7, int duration) {
 	unsigned long start = millis();
 
   int duration_ms = 5;
@@ -88,10 +91,14 @@ void playChord(int f1, int f2, int f3, int f4, int duration) {
   int delay_ms = duration_ms;
 
 	while (millis() - start < duration) {
-		if(f1 != 0) tone(10, f1, duration_ms); delay(delay_ms);
-		if(f2 != 0) tone(10, f2, duration_ms); delay(delay_ms);
-		if(f3 != 0) tone(10, f3, duration_ms); delay(delay_ms);
-    if(f4 != 0) tone(10, f4, duration_ms); delay(delay_ms);
+		if(f1 != 0) tone(10, f1, duration_ms); // delay(delay_ms);
+		if(f2 != 0) tone(10, f2, duration_ms); // delay(delay_ms);
+		if(f3 != 0) tone(10, f3, duration_ms); // delay(delay_ms);
+    if(f4 != 0) tone(10, f4, duration_ms); // delay(delay_ms);
+    if(f5 != 0) tone(10, f5, duration_ms);
+    if(f6 != 0) tone(10, f6, duration_ms);
+    if(f7 != 0) tone(10, f7, duration_ms);
 	}
+
 	noTone(10);
 }
