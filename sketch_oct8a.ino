@@ -1,6 +1,10 @@
 void setup() {
   Serial.begin(9600);
   pinMode(10, OUTPUT);
+
+  // pinMode(10, INPUT);
+  // pinMode(10, INPUT);
+
 	pinMode(A0, INPUT);
 	pinMode(A1, INPUT);
   pinMode(A2, INPUT);
@@ -51,33 +55,33 @@ void loop() {
   }
 
   int note0 = 0, note1 = 0, note2 = 0, note3 = 0, note4 = 0, note5 = 0, note6 = 0;
-  int note_threshold = 300;
+  int note_threshold = 400;
   if(value0 < note_threshold) note0 = 370;
-  if(value1 < note_threshold) note1 = 393;
+  if(value1 < 400) note1 = 393;
   if(value2 < note_threshold) note2 = 415;
   if(value3 < note_threshold) note3 = 440;
   if(value4 < note_threshold) note4 = 468;
   if(value5 < note_threshold) note5 = 490;
   if(value6 < note_threshold) note6 = 530;
 
-    if(TEST_MODE == 1){
-      tone(10, note0);
-      delay(100);
-      noTone(10);
-      return;
-    }
+  if(TEST_MODE == 1){
+    tone(10, note0);
+    delay(100);
+    noTone(10);
+    return;
+  }
 
-    if(TEST_MODE == 2){
-      if(note0 == 0) return;
-      tone(10, note0);
-      delay(100);
-      noTone(10);
-      return;
-    }
+  if(TEST_MODE == 2){
+    if(note0 == 0) return;
+    tone(10, note0);
+    delay(100);
+    noTone(10);
+    return;
+  }
 
-    if(TEST_MODE == 3){
-      playChord(note0, note1, note2, note3, note4, note5, note6, 100);
-    }
+  if(TEST_MODE == 3){
+    playChord(note0, note1, note2, note3, note4, note5, note6, 100);
+  }
 }
 
 
@@ -87,17 +91,16 @@ void playChord(int f1, int f2, int f3, int f4, int f5, int f6, int f7, int durat
 	unsigned long start = millis();
 
   int duration_ms = 5;
-  // example made delay > duration to distinguish notes
   int delay_ms = duration_ms;
 
 	while (millis() - start < duration) {
-		if(f1 != 0) tone(10, f1, duration_ms); // delay(delay_ms);
-		if(f2 != 0) tone(10, f2, duration_ms); // delay(delay_ms);
-		if(f3 != 0) tone(10, f3, duration_ms); // delay(delay_ms);
-    if(f4 != 0) tone(10, f4, duration_ms); // delay(delay_ms);
-    if(f5 != 0) tone(10, f5, duration_ms);
-    if(f6 != 0) tone(10, f6, duration_ms);
-    if(f7 != 0) tone(10, f7, duration_ms);
+		if(f1 != 0) { tone(10, f1, duration_ms); delay(2); }
+		if(f2 != 0) { tone(10, f2, duration_ms); delay(2); }
+		if(f3 != 0) { tone(10, f3, duration_ms); delay(2); }
+    if(f4 != 0) { tone(10, f4, duration_ms); delay(2); }
+    if(f5 != 0) { tone(10, f5, duration_ms); delay(2); }
+    if(f6 != 0) { tone(10, f6, duration_ms); delay(2); }
+    if(f7 != 0) { tone(10, f7, duration_ms); delay(2); }
 	}
 
 	noTone(10);
