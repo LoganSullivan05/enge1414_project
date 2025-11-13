@@ -1,3 +1,9 @@
+
+// Changing the setup. Instead of playing notes if the frequencies are !=0, play notes if values are below the threshold.
+global double note0 = 262, note1 = 294, note2 = 330, note3 = 349, note4 = 392, note5 = 440, note6 = 494;
+// 			  C4			 D4			    E4			   F4			  G4			 A5				B5
+global double[] noteArr = {note0, note1, note2, note3, note4, note5, note6};
+
 void setup() {
   Serial.begin(9600);
   pinMode(10, OUTPUT);
@@ -23,7 +29,17 @@ void setup() {
 
 const int TEST_MODE = 3;
 
+
 void loop() {
+	if (digitalRead(4)) {
+		fifthUP();
+	}
+	else if (digitalRead(5)) {
+		fifthDOWN();
+	}
+	else if (digitalRead(6)) {
+		fifthRESET();
+	}
 
   int value0 = analogRead(A1);
   int value1 = analogRead(A2);
@@ -32,6 +48,8 @@ void loop() {
   int value4 = analogRead(A5);
   int value5 = analogRead(A6);
   int value6 = analogRead(A7);
+
+	int[] valArr = {value0, value1, value2, value3, value4, value5, value6};
 
 	Serial.print(value0);
 	Serial.print(", ");
@@ -54,16 +72,7 @@ void loop() {
     return;
   }
 
-  int note0 = 0, note1 = 0, note2 = 0, note3 = 0, note4 = 0, note5 = 0, note6 = 0;
-  int note_threshold = 400;
-  if(value0 < note_threshold) note0 = 370;
-  if(value1 < 400) note1 = 393;
-  if(value2 < note_threshold) note2 = 415;
-  if(value3 < note_threshold) note3 = 440;
-  if(value4 < note_threshold) note4 = 468;
-  if(value5 < note_threshold) note5 = 490;
-  if(value6 < note_threshold) note6 = 530;
-
+	
   if(TEST_MODE == 1){
     tone(10, note0);
     delay(100);
@@ -80,28 +89,41 @@ void loop() {
   }
 
   if(TEST_MODE == 3){
-    playChord(note0, note1, note2, note3, note4, note5, note6, 100);
+    playChord(noteArr, valArr, 100);
   }
 }
 
-
-
+// Changing to operate with arrays instead
 //! doesnt work as intended
-void playChord(int f1, int f2, int f3, int f4, int f5, int f6, int f7, int duration) {
+void playChord(double[] frequencies, int[] thresholds, int duration) {
 	unsigned long start = millis();
 
   int duration_ms = 5;
   int delay_ms = duration_ms;
 
 	while (millis() - start < duration) {
-		if(f1 != 0) { tone(10, f1, duration_ms); delay(2); }
-		if(f2 != 0) { tone(10, f2, duration_ms); delay(2); }
-		if(f3 != 0) { tone(10, f3, duration_ms); delay(2); }
-    if(f4 != 0) { tone(10, f4, duration_ms); delay(2); }
-    if(f5 != 0) { tone(10, f5, duration_ms); delay(2); }
-    if(f6 != 0) { tone(10, f6, duration_ms); delay(2); }
-    if(f7 != 0) { tone(10, f7, duration_ms); delay(2); }
+		if(thresholds[0] > 400) { tone(10, frequencies[0], duration_ms); delay(2); }
+		if(thresholds[1] > 400) { tone(10, frequencies[1], duration_ms); delay(2); }
+		if(thresholds[2] > 400) { tone(10, frequencies[2], duration_ms); delay(2); }
+    if(thresholds[3] > 400) { tone(10, frequencies[3], duration_ms); delay(2); }
+    if(thresholds[4] > 400) { tone(10, frequencies[4], duration_ms); delay(2); }
+    if(thresholds[5] > 400) { tone(10, frequencies[5], duration_ms); delay(2); }
+    if(thresholds[6] > 400) { tone(10, frequencies[6], duration_ms); delay(2); }
 	}
 
 	noTone(10);
+}
+
+void fifthUP() {
+	for (int i = 0; i < sizeof(noteArr)/sizeof(noteArr[0]); i++) {
+		noteArr[i] *= (2.0**(7.0/12.0));
+	}
+}
+void fifthDOWN() {
+	for (int i = 0; i < sizeof(noteArr)/sizeof(noteArr[0]); i++) {
+		noteArr[i] /= (2.0**(7.0/12.0));
+	}
+}
+void fifthRESET() {
+	note0 = 262, note1 = 294, note2 = 330, note3 = 349, note4 = 392, note5 = 440, note6 = 494;
 }
